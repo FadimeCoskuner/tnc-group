@@ -8,6 +8,8 @@
     "functions": "nodemon functions/server.js",
     "conditions": "nodemon conditions-and-loops/server.js",
     "array": "nodemon array-methods/server.js",
+    "counter": "nodemon counter/server.js",
+    "calculator": "nodemon calculator/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

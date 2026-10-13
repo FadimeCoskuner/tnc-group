@@ -1,0 +1,218 @@
+{
+    "home": {
+        "name": "Fadime Mutlu",
+        "title": "Bilgisayar Mühendisi",
+        "description": "React.js, Next.js ve TypeScript ile modern ve ölçeklenebilir web uygulamaları geliştiren yazılım geliştirici",
+        "pages": ["/", "/about", "/experience", "/education", "/skills", "/projects", "/courses", "/contact", "/users"]
+    },
+    "about": {
+        "name": "Fadime Mutlu",
+        "title": "Bilgisayar Mühendisi",
+        "summary": "Necmettin Erbakan Üniversitesi'nde Bilgisayar Mühendisliği lisans eğitimimi tamamladım ve aynı alanda yüksek lisans eğitimime devam ediyorum. Yazılım kariyerime üniversite son sınıfta Armiya Bilgi Teknolojileri'nde intern mühendis olarak başladım ve staj sürecimin ardından aynı şirkette çalışmaya devam ettim. Sonrasında yaklaşık 3 yıl boyunca Kapsül Teknoloji Platformu'nda Yazılım Geliştirici olarak React.js, Next.js, TypeScript ve JavaScript ile modern ve ölçeklenebilir web uygulamaları geliştirdim. Frontend geliştirmenin yanı sıra API entegrasyonu, Google Apps Script tabanlı backend, git, deployment ve uçtan uca yazılım geliştirme süreçlerinde deneyim kazandım."
+    },
+    "experience": [
+        {
+            "id": 1,
+            "company": "Konya Büyükşehir Belediyesi Kapsül Teknoloji Platformu",
+            "position": "Yazılım Geliştirici",
+            "startDate": "Ekim 2023",
+            "endDate": "Eylül 2026",
+            "details": [
+                "React.js, Next.js ve TypeScript ile ölçeklenebilir, yeniden kullanılabilir bileşen yapıları geliştirdim; Tailwind CSS ile modern, responsive arayüzler tasarladım.",
+                "Yönetim paneli, mentör portalı ve kurumsal web sitesi olmak üzere birden fazla uygulamada frontend geliştirme sorumluluğu üstlendim.",
+                "Git ile ekip içi sürüm kontrolü ve kod paylaşımı süreçlerinde aktif rol aldım.",
+                "Google Apps Script üzerinde temel düzeyde backend entegrasyonları yaptım; projelerin canlıya alınma sürecine (derleme, ortam değişkenleri gibi) destek verdim."
+            ]
+        },
+        {
+            "id": 2,
+            "company": "Armiya Bilgi Teknolojileri",
+            "position": "Bilgisayar Mühendisi",
+            "startDate": "Ocak 2023",
+            "endDate": "Eylül 2023",
+            "details": [
+                "HTML, CSS, Bootstrap ve PHP ile kullanıcı dostu, dinamik web arayüzleri geliştirdim.",
+                "WordPress tabanlı web sitesi geliştirdim.",
+                "Figma ve Photoshop ile temel düzeyde arayüz tasarımı ve görsel düzenlemeler yaptım; veri tabanı yönetimi ve proje geliştirme süreçlerine (planlama, test, entegrasyon) katkı sağladım."
+            ]
+        }
+    ],
+    "education": [
+        {
+            "id": 1,
+            "degree": "Yüksek Lisans",
+            "department": "Bilgisayar Mühendisliği",
+            "school": "Necmettin Erbakan Üniversitesi",
+            "faculty": "Fen Bilimleri Enstitüsü",
+            "startDate": "Eylül 2024",
+            "endDate": "Devam ediyor"
+        },
+        {
+            "id": 2,
+            "degree": "Lisans",
+            "department": "Bilgisayar Mühendisliği",
+            "school": "Necmettin Erbakan Üniversitesi",
+            "faculty": "Ahmet Cengiz Mühendislik Fakültesi",
+            "startDate": "Eylül 2019",
+            "endDate": "Haziran 2023"
+        }
+    ],
+    "skills": {
+        "frontend": ["React.js", "Next.js", "TypeScript", "JavaScript", "Tailwind CSS", "Ant Design"],
+        "backend": ["Google Apps Script", "Google Sheets API", "REST API"],
+        "devops": ["Derleme & Yayına Alma", "Ortam Yapılandırması", "Alan Adı Yönetimi"],
+        "tools": ["Git", "GitHub"]
+    },
+    "projects": [
+        {
+            "id": 1,
+            "name": "Takım Yönetim Sistemi",
+            "url": "https://takim.kapsul.org.tr/",
+            "technologies": ["React.js", "TypeScript", "REST API"],
+            "details": [
+                "Takım ve kullanıcı yönetimi süreçlerini kapsayan yönetim panelinin frontend geliştirmesini React.js ve TypeScript kullanarak gerçekleştirdim.",
+                "REST API entegrasyonları ile takım ve kullanıcı verilerinin oluşturulması, güncellenmesi, silinmesi ve listelenmesi süreçlerini geliştirdim.",
+                "Filtreleme, arama, tablo ve modal tabanlı işlemler için yeniden kullanılabilir React bileşenleri oluşturdum.",
+                "Uygulama genelindeki state yönetimi ve veri akışını düzenleyerek kullanıcı işlemlerinin tutarlı şekilde yürütülmesini sağladım."
+            ]
+        },
+        {
+            "id": 2,
+            "name": "Kapsül Teknoloji Platformu Web Sitesi",
+            "url": "https://www.kapsul.org.tr/",
+            "technologies": ["React", "TypeScript", "Tailwind CSS"],
+            "details": [
+                "Kurumsal web sitesi ve yönetim panelini React, TypeScript ve Tailwind CSS ile geliştirdim; çift dilli (TR/EN) ve açık/koyu tema destekli arayüzler tasarladım.",
+                "Gösterge paneli, dinamik form oluşturucu, kullanıcı yönetimi/yetki matrisi gibi modülleri geliştirdim.",
+                "Dağıtım sürecine (build, alan adı yapılandırması) destek verdim."
+            ]
+        },
+        {
+            "id": 3,
+            "name": "Kapsül Teknoloji Platformu Yönetim Paneli",
+            "url": "https://www.ktpadmin.kapsul.org.tr/",
+            "technologies": ["React", "TypeScript"],
+            "details": [
+                "Platformun tüm içerik ve süreçlerini tek noktadan yönetilebilir hale getiren bir yönetim paneli ve gösterge paneli (dashboard) geliştirdim; anlık istatistik kartları, form yanıt özeti ve hızlı işlem kısayolları ekledim.",
+                "Etkinlikler, Duyurular, Bilgi Testi gibi platformun içerik modüllerini panelden yönetilebilir hale getirerek statik içerikleri dinamik veriye dönüştürdüm.",
+                "Google Forms tarzı bir dinamik form oluşturucu geliştirdim; koşullu alanlar, KVKK onay alanı, QR kod ve puanlı test (quiz) modu gibi özellikler ekledim.",
+                "Kullanıcı yönetimi ve yetki matrisi (yetki bazlı erişim) ekranlarını geliştirerek her yöneticinin yalnızca izinli olduğu modülleri görmesini sağladım."
+            ]
+        },
+        {
+            "id": 4,
+            "name": "Mentor Havuzu Sistemi",
+            "url": "https://www.mentor.kapsul.org.tr/",
+            "technologies": ["React", "Google Apps Script", "Google Sheets"],
+            "details": [
+                "Kapsül Teknoloji Platformu'nun mentörlük sürecini uçtan uca dijitalleştiren bir sistem geliştirdim; öğrencilerin talep oluşturabildiği, mentörlerin talepleri yönetebildiği ve yöneticilerin eşleştirme yapabildiği bir yapı kurdum.",
+                "React ile mentör kayıt, mentör girişi ve mentör paneli ekranlarını geliştirdim.",
+                "Yönetim paneline üç kolonlu (mentör-talep-detay) bir görünüm ve canlı metrikler ekledim.",
+                "Google Apps Script ve Google Sheets üzerinde temel düzeyde entegrasyonlar yaptım; aylık talep kotası ve otomatik e-posta bildirimi gibi iş kurallarının hayata geçirilmesine destek verdim."
+            ]
+        },
+        {
+            "id": 5,
+            "name": "İnsan Kaynakları Otomasyonu",
+            "url": "https://kale.kapsul.org.tr/hr-automation/",
+            "technologies": ["React.js", "TypeScript"],
+            "details": [
+                "Projenin frontend geliştirme sürecinin tamamından sorumlu olarak çalıştım. React.js ve TypeScript kullanarak çalışan yönetimi, izin-rapor takibi ve performans değerlendirme modüllerinin tüm arayüzlerini tasarladım ve geliştirdim. Kullanıcı dostu, modüler ve ölçeklenebilir bir yapı oluşturarak sistemin verimliliğini artırdım."
+            ]
+        },
+        {
+            "id": 6,
+            "name": "Su Hackathonu Web Sitesi",
+            "url": "https://suhackathonu.kapsul.org.tr/",
+            "technologies": [],
+            "details": [
+                "Su Hackathonu etkinliği için web sitesini sıfırdan geliştirdim."
+            ]
+        },
+        {
+            "id": 7,
+            "name": "Aylık Faaliyet Rapor Portalı",
+            "url": null,
+            "technologies": ["Google Apps Script", "Google Sheets", "Google Drive"],
+            "details": [
+                "Kapsül Teknoloji Platformu'nun tüm birimlerinin aylık faaliyet raporlarını dijital ortamda toplamasını sağlayan bir web uygulaması geliştirdim. Google Apps Script ve Google Sheets altyapısı üzerine kurduğum sistemde rol bazlı erişim, toplantı notu modülü ve Google Drive entegrasyonu gibi özellikleri hayata geçirdim.",
+                "Raporların PDF olarak dışa aktarılmasını ve e-posta ile iletilmesini sağladım; yönetim panelinde birim ve ay bazlı filtreleme imkânı sundum."
+            ]
+        },
+        {
+            "id": 8,
+            "name": "Mesai Takip Analiz Portalı",
+            "url": null,
+            "technologies": ["Google Apps Script"],
+            "details": [
+                "Personel mesai verilerinin takip edilmesini ve analiz edilmesini sağlayan bir portal geliştirdim. Google Apps Script altyapısı üzerinde veri toplama, raporlama ve analiz ekranlarını tasarladım."
+            ]
+        },
+        {
+            "id": 9,
+            "name": "Eklem Topluluk Destek Programı Portalı",
+            "url": null,
+            "technologies": ["Google Apps Script"],
+            "details": [
+                "Topluluk destek programının başvuru ve yönetim süreçlerini dijital ortama taşıyan bir sistem geliştirdim. Google Apps Script ile uçtan uca geliştirme sorumluluğunu üstlendim."
+            ]
+        },
+        {
+            "id": 10,
+            "name": "Teknik Gezi Portalı",
+            "url": null,
+            "technologies": ["Google Apps Script", "Google Sheets"],
+            "details": [
+                "Kurumun teknik gezi başvuru ve yönetim süreçlerini dijitalleştiren bir portal geliştirdim. Google Apps Script ve Google Sheets altyapısı üzerinde uçtan uca tasarım ve geliştirme sorumluluğunu üstlendim."
+            ]
+        },
+        {
+            "id": 11,
+            "name": "İSG Risk Analiz Portalı",
+            "url": null,
+            "technologies": ["Google Apps Script"],
+            "details": [
+                "İş sağlığı ve güvenliği süreçlerine ilişkin verilerin toplanmasını ve analiz edilmesini sağlayan bir portal geliştirdim. Google Apps Script tabanlı bir sistem olarak uçtan uca tasarladım ve geliştirdim."
+            ]
+        },
+        {
+            "id": 12,
+            "name": "Benim Kampüsüm",
+            "url": null,
+            "technologies": ["Next.js", "TypeScript", "Tailwind CSS"],
+            "details": [
+                "Hackathon'da ödül kazanan bu projede ekip olarak çalıştım. Next.js, TypeScript ve Tailwind CSS teknolojilerini kullanarak öğrenci ve akademisyenler için güvenli, modern ve etkileşimli bir platformun frontend yapısını geliştirdim. Kimlik doğrulama, rol bazlı erişim ve duyarlı arayüz bileşenleri üzerinde aktif görev aldım."
+            ]
+        },
+        {
+            "id": 13,
+            "name": "WordPress ile Web Sitesi Geliştirme",
+            "url": null,
+            "technologies": ["WordPress"],
+            "details": [
+                "Küçük ölçekli işletmeler ve kişisel projeler için birkaç kez WordPress tabanlı web sitesi oluşturdum. Tema düzenlemeleri, eklenti entegrasyonları ve içerik yönetimi üzerinde çalışarak kullanıcı dostu, mobil uyumlu arayüzler geliştirdim."
+            ]
+        }
+    ],
+    "courses": [
+        { "id": 1, "institution": "KOMEK", "name": "Web Tasarımı", "date": "Şubat - Nisan 2021" },
+        { "id": 2, "institution": "KOMEK", "name": "C++ Programlama Eğitimi", "date": "Şubat - Nisan 2021" },
+        { "id": 3, "institution": "KOMEK", "name": "İleri Seviye Excel Eğitimi", "date": "Nisan - Temmuz 2021" },
+        { "id": 4, "institution": "Halk Eğitim Merkezi", "name": "İngilizce A1 Seviyesi", "date": "Ocak - Nisan 2021" },
+        { "id": 5, "institution": "KOMEK", "name": "PHP Temel Seviye", "date": "Şubat - Mart 2023" },
+        { "id": 6, "institution": "Kapsül Teknoloji Platformu", "name": "UI / UX Eğitimi", "date": "Kasım 2023" },
+        { "id": 7, "institution": "Halk Eğitim Merkezi", "name": "Photoshop", "date": "Haziran - Ağustos 2024" },
+        { "id": 8, "institution": "Kapsül Teknoloji Platformu", "name": "İş Analizi Eğitimi", "date": "Eylül 2024" },
+        { "id": 9, "institution": "BTK Akademi", "name": "Yapay Zeka Zirvesi", "date": "Aralık 2024" }
+    ],
+    "contact": {
+        "email": "f*********@gmail.com",
+        "phone": "05** *** ** **",
+        "linkedin": "https://www.linkedin.com/in/fadimecoskuner"
+    },
+    "users": [
+        { "id": 1, "name": "Ali Yılmaz", "email": "ali@ornek.com", "age": 28, "city": "İstanbul" },
+        { "id": 2, "name": "Ayşe Demir", "email": "ayse@ornek.com", "age": 34, "city": "Ankara" },
+        { "id": 3, "name": "Mehmet Kaya", "email": "mehmet@ornek.com", "age": 22, "city": "İzmir" }
+    ]
+}

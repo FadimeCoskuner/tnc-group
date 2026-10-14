@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "app": "node --watch app.js",
-    "query": "node --watch query.js"
+    "query": "node --watch query.js",
+    "error": "node --watch error.js"
   },
   "keywords": [],
   "author": "",

@@ -25,6 +25,10 @@ const tasksRouter = require('./routes/tasks');
 
 app.use(express.json()); // JSON verilerini almak için gerekli middleware
 
+// public klasöründeki dosyaları (index.html, script.js) tarayıcıya sunar
+// http://localhost:3004 açılınca public/index.html gösterilir
+app.use(express.static(__dirname + '/public'));
+
 // Her modülü kendi adresine bağlıyoruz
 app.use('/users', usersRouter);
 app.use('/tasks', tasksRouter);

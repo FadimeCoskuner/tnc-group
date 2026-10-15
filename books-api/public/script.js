@@ -31,30 +31,48 @@ async function loadBooks() {
     renderBooks(result.data);
 }
 
-// Kitapları kart olarak ekrana çizer
+// Kapak renkleri: klasik ciltli kitap tonları
+const coverColors = ['#7f1d1d', '#14532d', '#1e3a5f', '#4a1d4a', '#5b3a1e', '#134e4a'];
+
+// Aynı türdeki kitaplar hep aynı renkte olsun diye türün harflerinden bir sayı üretiriz
+function getCoverColor(type) {
+    let total = 0;
+    for (const letter of type) {
+        total += letter.charCodeAt(0);
+    }
+    return coverColors[total % coverColors.length];
+}
+
+// Kitapları raftaki kapaklar olarak ekrana çizer
 function renderBooks(books) {
     countText.textContent = `(${books.length})`;
 
     if (books.length === 0) {
-        bookList.innerHTML = '<p class="text-slate-500">Bu türde kitap bulunamadı.</p>';
+        bookList.innerHTML = '<p class="col-span-full text-amber-100/70 italic">Bu rafta henüz kitap yok.</p>';
         return;
     }
 
-    // map: her kitap için bir HTML kartı oluşturur, join: hepsini birleştirir
+    // map: her kitap için bir HTML kapağı oluşturur, join: hepsini birleştirir
     bookList.innerHTML = books.map(book => `
-        <div class="bg-white rounded-xl shadow p-5 flex flex-col">
-            <span class="self-start text-xs bg-indigo-100 text-indigo-700 px-2 py-1 rounded-full mb-3">${book.type}</span>
-            <h3 class="font-semibold text-lg">${book.title}</h3>
-            <p class="text-slate-600">${book.author}</p>
-            <p class="text-slate-400 text-sm mb-4">${book.year}</p>
+        <div class="flex flex-col">
+            <div class="book-cover rounded-r-md rounded-l-sm aspect-[3/4] pl-7 pr-4 py-5 flex flex-col text-amber-50"
+                style="background-color: ${getCoverColor(book.type)}">
+                <span class="gold text-[10px] uppercase tracking-[0.3em]">${book.type}</span>
+                <h3 class="font-display gold text-lg leading-snug mt-3">${book.title}</h3>
+                <p class="italic text-amber-100/80 text-sm mt-2">${book.author}</p>
+                <p class="mt-auto text-amber-100/60 text-xs">${book.year}</p>
+            </div>
 
-            <div class="mt-auto flex gap-2">
+            <!-- Raf tahtası -->
+            <div class="shelf -mx-3"></div>
+
+            <div class="flex gap-2 mt-3">
                 <button onclick="startEdit(${book.id})"
-                    class="flex-1 bg-amber-100 hover:bg-amber-200 text-amber-800 text-sm py-1.5 rounded-lg">
+                    class="flex-1 text-xs py-1.5 border border-amber-600/60 text-amber-200 hover:bg-amber-700/30 rounded-sm">
                     Düzenle
                 </button>
                 <button onclick="deleteBook(${book.id})"
-                    class="flex-1 bg-red-100 hover:bg-red-200 text-red-700 text-sm py-1.5 rounded-lg">
+                    class="flex-1 text-xs py-1.5 border border-red-700/60 text-red-300 hover:bg-red-900/40 rounded-sm">
                     Sil
                 </button>
             </div>
@@ -161,7 +179,7 @@ function resetForm() {
 // Başarılıysa yeşil, hatalıysa kırmızı mesaj gösterir
 function showMessage(text, success) {
     messageText.textContent = text;
-    messageText.className = 'text-sm mt-4 ' + (success ? 'text-green-600' : 'text-red-600');
+    messageText.className = 'text-sm mt-4 italic ' + (success ? 'text-green-800' : 'text-red-800');
 
     // 3 saniye sonra mesajı temizle
     setTimeout(() => { messageText.textContent = ''; }, 3000);

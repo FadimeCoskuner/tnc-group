@@ -5,87 +5,146 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kitaplığım</title>
 
-    <!-- Tailwind CSS (CDN): kurulum gerektirmez, internet bağlantısı yeterli -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['Lora', 'Georgia', 'serif'],
+                        display: ['"Playfair Display"', 'Georgia', 'serif']
+                    }
+                }
+            }
+        };
+    </script>
+
+    <style>
+        body {
+            background-color: #2b1d14;
+            background-image:
+                repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.02) 0 2px, transparent 2px 9px),
+                linear-gradient(180deg, #3a271a, #22160f);
+            background-attachment: fixed;
+        }
+
+        .catalog-card {
+            background-color: #f7efdc;
+            background-image: repeating-linear-gradient(180deg, transparent 0 31px, rgba(120, 90, 60, 0.15) 31px 32px);
+        }
+
+        .book-cover {
+            position: relative;
+            box-shadow: inset 10px 0 0 rgba(0, 0, 0, 0.25), 0 8px 16px rgba(0, 0, 0, 0.45);
+            transition: transform 0.2s ease;
+        }
+
+        .book-cover:hover {
+            transform: translateY(-6px) rotate(-1deg);
+        }
+
+        .book-cover::after {
+            content: "";
+            position: absolute;
+            inset: 10px 10px 10px 20px;
+            border: 1px solid rgba(214, 178, 94, 0.45);
+            border-radius: 2px;
+            pointer-events: none;
+        }
+
+        .shelf {
+            height: 14px;
+            background: linear-gradient(180deg, #8b5e34, #5c3b1e);
+            border-radius: 2px;
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .gold {
+            color: #d6b25e;
+        }
+    </style>
 </head>
 
-<body class="min-h-screen bg-slate-100 font-sans text-slate-800">
+<body class="min-h-screen font-serif text-stone-800">
 
-    <!-- Üst başlık -->
-    <header class="bg-indigo-600 text-white py-6 shadow">
-        <div class="max-w-5xl mx-auto px-4">
-            <h1 class="text-2xl font-bold">📚 Kitaplığım</h1>
-            <p class="text-indigo-100 text-sm mt-1">Kitap ekle, düzenle, sil ve türe göre filtrele</p>
-        </div>
+    <header class="py-10 text-center border-b border-amber-900/50">
+        <p class="gold tracking-[0.4em] text-xs uppercase">Est. 2026</p>
+        <h1 class="font-display gold text-4xl md:text-5xl mt-2">Kitaplığım</h1>
+        <p class="text-amber-100/70 italic mt-2">Raflarındaki her kitap bir hikâye</p>
     </header>
 
-    <main class="max-w-5xl mx-auto px-4 py-8 grid gap-8 md:grid-cols-3">
+    <main class="max-w-6xl mx-auto px-4 py-10 grid gap-10 lg:grid-cols-3">
 
-        <!-- ---------- Sol: Kitap ekleme / düzenleme formu ---------- -->
-        <section class="bg-white rounded-xl shadow p-6 h-fit">
-            <h2 id="form-title" class="text-lg font-semibold mb-4">Yeni Kitap Ekle</h2>
+        <section class="catalog-card rounded-sm shadow-2xl p-6 h-fit border-t-4 border-red-800">
+            <h2 id="form-title" class="font-display text-2xl text-stone-900 mb-1">Yeni Kitap Ekle</h2>
+            <p class="text-sm italic text-stone-500 mb-5">Katalog fişini doldurun</p>
 
-            <form id="book-form" class="space-y-3">
-                <!-- Düzenleme modunda dolu, ekleme modunda boş olur -->
+            <form id="book-form" class="space-y-4">
                 <input type="hidden" id="book-id">
 
                 <div>
-                    <label class="block text-sm font-medium mb-1" for="title">Başlık</label>
+                    <label class="block text-xs uppercase tracking-widest text-stone-500" for="title">Başlık</label>
                     <input id="title" type="text" required
-                        class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400">
+                        class="w-full bg-transparent border-b border-stone-400 py-1.5 text-lg focus:outline-none focus:border-red-800">
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium mb-1" for="author">Yazar</label>
+                    <label class="block text-xs uppercase tracking-widest text-stone-500" for="author">Yazar</label>
                     <input id="author" type="text" required
-                        class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400">
+                        class="w-full bg-transparent border-b border-stone-400 py-1.5 text-lg focus:outline-none focus:border-red-800">
                 </div>
 
-                <div>
-                    <label class="block text-sm font-medium mb-1" for="year">Yıl</label>
-                    <input id="year" type="number" required
-                        class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs uppercase tracking-widest text-stone-500" for="year">Yıl</label>
+                        <input id="year" type="number" required
+                            class="w-full bg-transparent border-b border-stone-400 py-1.5 text-lg focus:outline-none focus:border-red-800">
+                    </div>
+                    <div>
+                        <label class="block text-xs uppercase tracking-widest text-stone-500" for="type">Tür</label>
+                        <input id="type" type="text" placeholder="roman" required
+                            class="w-full bg-transparent border-b border-stone-400 py-1.5 text-lg placeholder:text-stone-400 focus:outline-none focus:border-red-800">
+                    </div>
                 </div>
 
-                <div>
-                    <label class="block text-sm font-medium mb-1" for="type">Tür</label>
-                    <input id="type" type="text" placeholder="roman, tarih, bilim..." required
-                        class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400">
-                </div>
-
-                <div class="flex gap-2 pt-2">
+                <div class="flex gap-3 pt-3">
                     <button id="submit-btn" type="submit"
-                        class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 rounded-lg">
+                        class="flex-1 bg-red-900 hover:bg-red-800 text-amber-50 font-display tracking-wide py-2.5 rounded-sm shadow">
                         Ekle
                     </button>
-                    <!-- Sadece düzenleme modunda görünür -->
                     <button id="cancel-btn" type="button"
-                        class="hidden px-4 bg-slate-200 hover:bg-slate-300 rounded-lg">
+                        class="hidden px-5 border border-stone-400 text-stone-700 hover:bg-stone-200 rounded-sm">
                         Vazgeç
                     </button>
                 </div>
             </form>
 
-            <!-- Başarı / hata mesajı burada görünür -->
-            <p id="message" class="text-sm mt-4"></p>
+            <p id="message" class="text-sm mt-4 italic"></p>
         </section>
 
-        <!-- ---------- Sağ: Kitap listesi ---------- -->
-        <section class="md:col-span-2">
-            <div class="flex items-center justify-between mb-4">
-                <h2 class="text-lg font-semibold">Kitaplar <span id="count" class="text-slate-500 font-normal"></span></h2>
+        <section class="lg:col-span-2">
+            <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
+                <h2 class="font-display text-2xl text-amber-50">
+                    Raflar <span id="count" class="gold text-lg"></span>
+                </h2>
 
-                <!-- Tür filtresi: seçince /books?type=... isteği atılır -->
                 <select id="filter"
-                    class="border border-slate-300 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-400">
+                    class="bg-stone-900/60 text-amber-100 border border-amber-700/60 rounded-sm px-3 py-2 focus:outline-none focus:border-amber-500">
                     <option value="">Tüm türler</option>
                 </select>
             </div>
 
-            <!-- Kitap kartları JavaScript ile buraya eklenir -->
-            <div id="book-list" class="grid gap-4 sm:grid-cols-2"></div>
+            <div id="book-list" class="grid gap-x-6 gap-y-10 grid-cols-2 sm:grid-cols-3"></div>
         </section>
     </main>
+
+    <footer class="text-center text-amber-100/40 text-sm italic pb-8">
+        “Bir kitap, cebinizde taşıdığınız bir bahçedir.”
+    </footer>
 
     <script src="script.js"></script>
 </body>

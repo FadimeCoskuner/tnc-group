@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kitaplığım</title>
+
+    <!-- Tailwind CSS (CDN): kurulum gerektirmez, internet bağlantısı yeterli -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="min-h-screen bg-slate-100 font-sans text-slate-800">
+
+    <!-- Üst başlık -->
+    <header class="bg-indigo-600 text-white py-6 shadow">
+        <div class="max-w-5xl mx-auto px-4">
+            <h1 class="text-2xl font-bold">📚 Kitaplığım</h1>
+            <p class="text-indigo-100 text-sm mt-1">Kitap ekle, düzenle, sil ve türe göre filtrele</p>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-4 py-8 grid gap-8 md:grid-cols-3">
+
+        <!-- ---------- Sol: Kitap ekleme / düzenleme formu ---------- -->
+        <section class="bg-white rounded-xl shadow p-6 h-fit">
+            <h2 id="form-title" class="text-lg font-semibold mb-4">Yeni Kitap Ekle</h2>
+
+            <form id="book-form" class="space-y-3">
+                <!-- Düzenleme modunda dolu, ekleme modunda boş olur -->
+                <input type="hidden" id="book-id">
+
+                <div>
+                    <label class="block text-sm font-medium mb-1" for="title">Başlık</label>
+                    <input id="title" type="text" required
+                        class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium mb-1" for="author">Yazar</label>
+                    <input id="author" type="text" required
+                        class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium mb-1" for="year">Yıl</label>
+                    <input id="year" type="number" required
+                        class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium mb-1" for="type">Tür</label>
+                    <input id="type" type="text" placeholder="roman, tarih, bilim..." required
+                        class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400">
+                </div>
+
+                <div class="flex gap-2 pt-2">
+                    <button id="submit-btn" type="submit"
+                        class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 rounded-lg">
+                        Ekle
+                    </button>
+                    <!-- Sadece düzenleme modunda görünür -->
+                    <button id="cancel-btn" type="button"
+                        class="hidden px-4 bg-slate-200 hover:bg-slate-300 rounded-lg">
+                        Vazgeç
+                    </button>
+                </div>
+            </form>
+
+            <!-- Başarı / hata mesajı burada görünür -->
+            <p id="message" class="text-sm mt-4"></p>
+        </section>
+
+        <!-- ---------- Sağ: Kitap listesi ---------- -->
+        <section class="md:col-span-2">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-lg font-semibold">Kitaplar <span id="count" class="text-slate-500 font-normal"></span></h2>
+
+                <!-- Tür filtresi: seçince /books?type=... isteği atılır -->
+                <select id="filter"
+                    class="border border-slate-300 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-400">
+                    <option value="">Tüm türler</option>
+                </select>
+            </div>
+
+            <!-- Kitap kartları JavaScript ile buraya eklenir -->
+            <div id="book-list" class="grid gap-4 sm:grid-cols-2"></div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

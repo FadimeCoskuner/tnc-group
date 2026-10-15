@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kütüphane Sistemi</title>
+
+    <!-- Yazı tipleri: başlıklar için DM Serif Display, metinler için DM Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS (CDN): kurulum gerektirmez, internet bağlantısı yeterli -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"DM Sans"', 'system-ui', 'sans-serif'],
+                        serif: ['"DM Serif Display"', 'Georgia', 'serif']
+                    }
+                }
+            }
+        };
+    </script>
+</head>
+
+<body class="min-h-screen bg-stone-100 font-sans text-slate-800">
+
+    <!-- ---------- Üst bölüm: başlık ve istatistikler ---------- -->
+    <header class="bg-[#13233a] text-white">
+        <div class="max-w-6xl mx-auto px-4 pt-8 pb-20">
+            <p class="text-amber-400 text-xs uppercase tracking-[0.3em]">Ödünç Takip Masası</p>
+            <h1 class="font-serif text-4xl mt-2">Şehir Kütüphanesi</h1>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 -mt-12 pb-16">
+
+        <!-- İstatistik kartları: JavaScript ile doldurulur -->
+        <div id="stats" class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8"></div>
+
+        <!-- Sekmeler -->
+        <div class="flex gap-6 border-b border-stone-300 mb-6">
+            <button data-tab="loans" class="tab-btn pb-3 font-medium">Ödünç İşlemleri</button>
+            <button data-tab="books" class="tab-btn pb-3 font-medium">Kitaplar</button>
+            <button data-tab="users" class="tab-btn pb-3 font-medium">Üyeler</button>
+        </div>
+
+        <!-- ================= SEKME 1: Ödünç İşlemleri ================= -->
+        <section id="tab-loans" class="tab-panel space-y-8">
+
+            <!-- Ödünç ver formu: POST /loans -->
+            <form id="loan-form" class="bg-white rounded-2xl shadow-sm p-6 grid gap-4 md:grid-cols-[1fr_1fr_auto] md:items-end">
+                <div>
+                    <label class="block text-sm text-slate-500 mb-1" for="loan-user">Üye</label>
+                    <select id="loan-user" class="w-full border border-stone-300 rounded-lg px-3 py-2.5 bg-white focus:outline-none focus:ring-2 focus:ring-amber-400"></select>
+                </div>
+                <div>
+                    <label class="block text-sm text-slate-500 mb-1" for="loan-book">Raftaki kitap</label>
+                    <select id="loan-book" class="w-full border border-stone-300 rounded-lg px-3 py-2.5 bg-white focus:outline-none focus:ring-2 focus:ring-amber-400"></select>
+                </div>
+                <button type="submit" class="bg-amber-500 hover:bg-amber-600 text-[#13233a] font-semibold px-6 py-2.5 rounded-lg">
+                    Ödünç ver
+                </button>
+            </form>
+
+            <!-- Şu an ödünçte olanlar -->
+            <div>
+                <h2 class="font-serif text-2xl mb-3">Ödünçteki kitaplar</h2>
+                <div id="active-loans" class="grid gap-3 md:grid-cols-2"></div>
+            </div>
+
+            <!-- Geçmiş: iade edilmiş kayıtlar -->
+            <div>
+                <h2 class="font-serif text-2xl mb-3">Geçmiş</h2>
+                <div class="bg-white rounded-2xl shadow-sm overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead class="text-left text-slate-500 border-b border-stone-200">
+                            <tr>
+                                <th class="px-5 py-3 font-medium">Kitap</th>
+                                <th class="px-5 py-3 font-medium">Üye</th>
+                                <th class="px-5 py-3 font-medium">Alış</th>
+                                <th class="px-5 py-3 font-medium">İade</th>
+                            </tr>
+                        </thead>
+                        <tbody id="loan-history"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SEKME 2: Kitaplar ================= -->
+        <section id="tab-books" class="tab-panel hidden space-y-6">
+
+            <!-- Kitap ekle formu: POST /books -->
+            <form id="book-form" class="bg-white rounded-2xl shadow-sm p-6 grid gap-4 md:grid-cols-[1fr_1fr_auto] md:items-end">
+                <div>
+                    <label class="block text-sm text-slate-500 mb-1" for="book-title">Kitap adı</label>
+                    <input id="book-title" type="text" required class="w-full border border-stone-300 rounded-lg px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-amber-400">
+                </div>
+                <div>
+                    <label class="block text-sm text-slate-500 mb-1" for="book-author">Yazar</label>
+                    <input id="book-author" type="text" required class="w-full border border-stone-300 rounded-lg px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-amber-400">
+                </div>
+                <button type="submit" class="bg-[#13233a] hover:bg-[#1d3557] text-white font-semibold px-6 py-2.5 rounded-lg">
+                    Kitap ekle
+                </button>
+            </form>
+
+            <!-- Rafta / ödünçte filtresi: GET /books?available=... -->
+            <div id="book-filter" class="flex gap-2">
+                <button data-available="" class="filter-btn text-sm px-4 py-1.5 rounded-full border">Tümü</button>
+                <button data-available="true" class="filter-btn text-sm px-4 py-1.5 rounded-full border">Rafta</button>
+                <button data-available="false" class="filter-btn text-sm px-4 py-1.5 rounded-full border">Ödünçte</button>
+            </div>
+
+            <div id="book-list" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"></div>
+        </section>
+
+        <!-- ================= SEKME 3: Üyeler ================= -->
+        <section id="tab-users" class="tab-panel hidden space-y-6">
+
+            <!-- Üye ekle formu: POST /users -->
+            <form id="user-form" class="bg-white rounded-2xl shadow-sm p-6 grid gap-4 md:grid-cols-[1fr_1fr_auto] md:items-end">
+                <div>
+                    <label class="block text-sm text-slate-500 mb-1" for="user-name">İsim</label>
+                    <input id="user-name" type="text" required class="w-full border border-stone-300 rounded-lg px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-amber-400">
+                </div>
+                <div>
+                    <label class="block text-sm text-slate-500 mb-1" for="user-email">E-posta</label>
+                    <input id="user-email" type="email" required class="w-full border border-stone-300 rounded-lg px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-amber-400">
+                </div>
+                <button type="submit" class="bg-[#13233a] hover:bg-[#1d3557] text-white font-semibold px-6 py-2.5 rounded-lg">
+                    Üye ekle
+                </button>
+            </form>
+
+            <div id="user-list" class="grid gap-4 md:grid-cols-2"></div>
+        </section>
+    </main>
+
+    <!-- Sunucudan gelen mesaj (sağ altta kısa süre görünür) -->
+    <div id="toast" class="hidden fixed bottom-6 right-6 px-4 py-3 rounded-xl shadow-lg text-sm text-white max-w-xs"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Not Defterim</title>
+
+    <!-- Yazı tipleri: başlıklar el yazısı gibi (Caveat), metinler okunaklı (Nunito) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS (CDN): kurulum gerektirmez, internet bağlantısı yeterli -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Nunito', 'system-ui', 'sans-serif'],
+                        hand: ['Caveat', 'cursive']
+                    }
+                }
+            }
+        };
+    </script>
+
+    <style>
+        /* Arka plan: kareli defter kâğıdı */
+        body {
+            background-color: #fbf8f1;
+            background-image:
+                linear-gradient(rgba(120, 140, 180, 0.12) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(120, 140, 180, 0.12) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        /* Yapışkan not kâğıdı */
+        .sticky-note {
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08), 0 10px 20px -8px rgba(0, 0, 0, 0.25);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .sticky-note:hover {
+            transform: rotate(0deg) scale(1.03) !important;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 18px 30px -10px rgba(0, 0, 0, 0.3);
+            z-index: 1;
+        }
+
+        /* Notun üstündeki şeffaf bant */
+        .tape {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            width: 70px;
+            height: 20px;
+            transform: translateX(-50%) rotate(-3deg);
+            background: rgba(255, 255, 255, 0.55);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+
+<body class="min-h-screen font-sans text-stone-800">
+
+    <main class="max-w-6xl mx-auto px-4 py-10">
+
+        <!-- Başlık -->
+        <header class="text-center mb-10">
+            <h1 class="font-hand text-6xl text-stone-800">📒 Not Defterim</h1>
+            <p id="count" class="text-stone-500 mt-1"></p>
+        </header>
+
+        <!-- Not yazma alanı: defter sayfası gibi -->
+        <form id="note-form" class="max-w-xl mx-auto bg-white rounded-2xl shadow-md p-5 mb-6 border-l-4 border-rose-300">
+            <!-- Düzenleme modunda dolu, yeni notta boş -->
+            <input type="hidden" id="note-id">
+
+            <input id="title" type="text" placeholder="Başlık"
+                class="w-full font-hand text-3xl bg-transparent focus:outline-none placeholder:text-stone-300">
+
+            <textarea id="content" rows="3" placeholder="Bir not yaz..."
+                class="w-full mt-1 bg-transparent resize-none focus:outline-none placeholder:text-stone-400"></textarea>
+
+            <div class="flex items-center justify-between gap-3 mt-2">
+                <p id="message" class="text-sm"></p>
+                <div class="flex gap-2">
+                    <!-- Sadece düzenleme modunda görünür -->
+                    <button id="cancel-btn" type="button"
+                        class="hidden px-4 py-2 rounded-full text-stone-500 hover:bg-stone-100">
+                        Vazgeç
+                    </button>
+                    <button id="submit-btn" type="submit"
+                        class="px-5 py-2 rounded-full bg-stone-800 hover:bg-stone-700 text-white font-semibold">
+                        Kaydet
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Arama: GET /notes?search=... -->
+        <div class="max-w-xl mx-auto mb-10">
+            <input id="search" type="search" placeholder="🔍  Notlarda ara..."
+                class="w-full bg-white/80 border border-stone-200 rounded-full px-5 py-2.5 focus:outline-none focus:ring-2 focus:ring-rose-200">
+        </div>
+
+        <!-- Notlar JavaScript ile buraya eklenir -->
+        <div id="note-list" class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"></div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

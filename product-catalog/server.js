@@ -16,6 +16,10 @@ const port = 3003;
 
 app.use(express.json()); // JSON verilerini almak için gerekli middleware
 
+// public klasöründeki dosyaları (index.html, script.js) tarayıcıya sunar
+// http://localhost:3003 açılınca public/index.html gösterilir
+app.use(express.static(__dirname + '/public'));
+
 // Ürün listesi (sunucu kapanınca başa döner)
 let products = [
     { id: 1, name: "Laptop", price: 25000, stock: 10, category: "electronics" },

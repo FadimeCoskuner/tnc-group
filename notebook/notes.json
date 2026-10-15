@@ -3,19 +3,30 @@
     "id": 1,
     "title": "Alışveriş",
     "content": "Süt, ekmek, yumurta al",
-    "createdAt": "2026-10-13"
+    "createdAt": "2026-10-13",
+    "completed": true,
+    "completedAt": "2026-10-15"
   },
   {
     "id": 2,
     "title": "Ders",
     "content": "fs modülünü tekrar et",
-    "createdAt": "2026-10-13"
+    "createdAt": "2026-10-13",
+    "completed": false
   },
   {
     "id": 3,
     "title": "Spor",
     "content": "Akşam 30 dakika yürüyüş yap",
     "createdAt": "2026-10-14",
-    "updatedAt": "2026-10-15"
+    "updatedAt": "2026-10-15",
+    "completed": false
+  },
+  {
+    "id": 4,
+    "title": "Yemek",
+    "content": "Aperatif bi şeyler hazırla",
+    "completed": false,
+    "createdAt": "2026-10-15"
   }
 ]

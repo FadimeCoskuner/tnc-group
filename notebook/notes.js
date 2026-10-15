@@ -9,10 +9,11 @@ const path = require('path');
 const FILE_PATH = path.join(__dirname, 'notes.json');
 
 // Dosya yoksa ilk kez başlatılırken kullanılacak örnek notlar
+// completed: not yapıldıysa true, yapılmadıysa false
 const sampleNotes = [
-    { id: 1, title: "Alışveriş", content: "Süt, ekmek, yumurta al", createdAt: "2026-10-13" },
-    { id: 2, title: "Ders", content: "fs modülünü tekrar et", createdAt: "2026-10-13" },
-    { id: 3, title: "Spor", content: "Akşam 30 dakika yürüyüş", createdAt: "2026-10-14" }
+    { id: 1, title: "Alışveriş", content: "Süt, ekmek, yumurta al", completed: false, createdAt: "2026-10-13" },
+    { id: 2, title: "Ders", content: "fs modülünü tekrar et", completed: true, createdAt: "2026-10-13" },
+    { id: 3, title: "Spor", content: "Akşam 30 dakika yürüyüş", completed: false, createdAt: "2026-10-14" }
 ];
 
 // Bugünün tarihi: "2026-10-15"
@@ -34,7 +35,10 @@ function readNotes() {
     }
 
     const text = fs.readFileSync(FILE_PATH, 'utf-8');
-    return JSON.parse(text); // yazıyı tekrar diziye çevir
+    const notes = JSON.parse(text); // yazıyı tekrar diziye çevir
+
+    // Eski notlarda completed alanı olmayabilir: yoksa false kabul et
+    return notes.map(n => ({ ...n, completed: n.completed === true }));
 }
 
 // Yeni not ekler, eklenen notu döndürür
@@ -46,6 +50,7 @@ function addNote(title, content) {
         id: notes.length > 0 ? Math.max(...notes.map(n => n.id)) + 1 : 1,
         title,
         content,
+        completed: false, // yeni not henüz yapılmadı
         createdAt: today()
     };
 
@@ -71,6 +76,24 @@ function updateNote(id, title, content) {
     return note;
 }
 
+// Notu "yapıldı" veya "yapılmadı" olarak işaretler (bulunamazsa null)
+// completed verilmezse mevcut durumun tersine çevrilir
+function setCompleted(id, completed) {
+    const notes = readNotes();
+    const note = notes.find(n => n.id === id);
+
+    if (!note) {
+        return null;
+    }
+
+    note.completed = completed === undefined ? !note.completed : completed;
+    // Ne zaman tamamlandığını tut, geri alınırsa sil
+    note.completedAt = note.completed ? today() : undefined;
+
+    saveNotes(notes);
+    return note;
+}
+
 // Notu siler, silinen notu döndürür (bulunamazsa null)
 function deleteNote(id) {
     const notes = readNotes();
@@ -85,4 +108,4 @@ function deleteNote(id) {
     return deleted;
 }
 
-module.exports = { readNotes, addNote, updateNote, deleteNote };
+module.exports = { readNotes, addNote, updateNote, setCompleted, deleteNote };

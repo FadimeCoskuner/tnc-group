@@ -58,6 +58,23 @@
             background: rgba(255, 255, 255, 0.55);
             border: 1px solid rgba(0, 0, 0, 0.05);
         }
+
+        /* Tamamlanan notun üstündeki "YAPILDI" damgası */
+        .stamp {
+            position: absolute;
+            top: 45%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-14deg);
+            border: 3px solid #16a34a;
+            color: #16a34a;
+            padding: 2px 12px;
+            border-radius: 6px;
+            font-weight: 800;
+            letter-spacing: 0.15em;
+            font-size: 1.1rem;
+            opacity: 0.75;
+            pointer-events: none;
+        }
     </style>
 </head>
 
@@ -99,9 +116,18 @@
         </form>
 
         <!-- Arama: GET /notes?search=... -->
-        <div class="max-w-xl mx-auto mb-10">
+        <div class="max-w-xl mx-auto mb-4">
             <input id="search" type="search" placeholder="🔍  Notlarda ara..."
                 class="w-full bg-white/80 border border-stone-200 rounded-full px-5 py-2.5 focus:outline-none focus:ring-2 focus:ring-rose-200">
+        </div>
+
+        <!-- Durum filtresi: GET /notes?completed=... -->
+        <div class="flex justify-center mb-10">
+            <div class="flex gap-1 bg-white/80 border border-stone-200 p-1 rounded-full">
+                <button data-status="" class="status-tab px-4 py-1.5 text-sm rounded-full">Tümü</button>
+                <button data-status="false" class="status-tab px-4 py-1.5 text-sm rounded-full">Yapılacak</button>
+                <button data-status="true" class="status-tab px-4 py-1.5 text-sm rounded-full">Tamamlandı</button>
+            </div>
         </div>
 
         <!-- Notlar JavaScript ile buraya eklenir -->

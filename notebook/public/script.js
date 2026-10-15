@@ -12,6 +12,10 @@ const messageText = document.getElementById('message');
 const searchInput = document.getElementById('search');
 const noteList = document.getElementById('note-list');
 const countText = document.getElementById('count');
+const statusTabs = document.querySelectorAll('.status-tab');
+
+// Seçili durum filtresi: '' = tümü, 'false' = yapılacak, 'true' = tamamlandı
+let selectedStatus = '';
 
 // Yapışkan not renkleri ve hafif eğim açıları
 const noteColors = ['bg-yellow-200', 'bg-pink-200', 'bg-sky-200', 'bg-lime-200', 'bg-orange-200', 'bg-violet-200'];
@@ -34,23 +38,42 @@ function formatDate(dateText) {
 // ==============================
 async function loadNotes() {
     const search = searchInput.value.trim();
-    const url = search ? `${API_URL}?search=${encodeURIComponent(search)}` : API_URL;
 
-    const response = await fetch(url);
+    // ?search=...&completed=... kısmını oluştur
+    const params = new URLSearchParams();
+    if (search) params.append('search', search);
+    if (selectedStatus) params.append('completed', selectedStatus);
+
+    const query = params.toString();
+    const response = await fetch(query ? `${API_URL}?${query}` : API_URL);
     const result = await response.json();
 
+    // Üstteki sayaç filtreden bağımsız olsun diye tüm notları da çekiyoruz
+    const all = (await (await fetch(API_URL)).json()).data;
+    const doneCount = all.filter(n => n.completed).length;
+    countText.textContent = `${all.length} not · ${doneCount} tamamlandı`;
+
+    renderTabs();
     renderNotes(result.data, search);
 }
 
-function renderNotes(notes, search) {
-    countText.textContent = search
-        ? `"${search}" için ${notes.length} not bulundu`
-        : `${notes.length} not`;
+// Aktif filtre butonunu koyu yap
+function renderTabs() {
+    statusTabs.forEach(tab => {
+        const active = tab.dataset.status === selectedStatus;
+        tab.className = 'status-tab px-4 py-1.5 text-sm rounded-full ' +
+            (active ? 'bg-stone-800 text-white' : 'text-stone-600 hover:bg-stone-100');
+    });
+}
 
+function renderNotes(notes, search) {
     if (notes.length === 0) {
-        noteList.innerHTML = `<p class="col-span-full text-center font-hand text-3xl text-stone-400 py-10">
-            ${search ? 'Eşleşen not yok' : 'Henüz not yok, ilk notunu yaz ✍️'}
-        </p>`;
+        let emptyText = 'Henüz not yok, ilk notunu yaz ✍️';
+        if (search) emptyText = 'Eşleşen not yok';
+        else if (selectedStatus === 'true') emptyText = 'Henüz tamamlanan not yok';
+        else if (selectedStatus === 'false') emptyText = 'Yapılacak bir şey kalmadı 🎉';
+
+        noteList.innerHTML = `<p class="col-span-full text-center font-hand text-3xl text-stone-400 py-10">${emptyText}</p>`;
         return;
     }
 
@@ -59,17 +82,31 @@ function renderNotes(notes, search) {
         const color = noteColors[note.id % noteColors.length];
         const rotate = rotations[note.id % rotations.length];
 
-        return `
-            <div class="sticky-note ${color} relative p-5 pt-6 min-h-[200px] flex flex-col" style="transform: rotate(${rotate}deg)">
-                <span class="tape"></span>
+        // Tamamlanan not soluk ve üstü çizili görünür
+        const done = note.completed;
 
-                <h3 class="font-hand text-3xl leading-tight">${escapeHtml(note.title)}</h3>
+        // Alttaki tarih: tamamlandıysa tamamlanma tarihi, değilse oluşturma/düzenleme tarihi
+        let dateText = formatDate(note.updatedAt || note.createdAt) + (note.updatedAt ? ' · düzenlendi' : '');
+        if (done && note.completedAt) dateText = `✔ ${formatDate(note.completedAt)}`;
+
+        return `
+            <div class="sticky-note ${color} relative p-5 pt-6 min-h-[200px] flex flex-col ${done ? 'opacity-60' : ''}" style="transform: rotate(${rotate}deg)">
+                <span class="tape"></span>
+                ${done ? '<span class="stamp">YAPILDI</span>' : ''}
+
+                <h3 class="font-hand text-3xl leading-tight ${done ? 'line-through' : ''}">${escapeHtml(note.title)}</h3>
                 <!-- whitespace-pre-line: notta alt satıra geçilmişse aynen gösterir -->
-                <p class="mt-2 text-stone-700 whitespace-pre-line break-words flex-1">${escapeHtml(note.content)}</p>
+                <p class="mt-2 text-stone-700 whitespace-pre-line break-words flex-1 ${done ? 'line-through' : ''}">${escapeHtml(note.content)}</p>
 
                 <div class="flex items-center justify-between mt-4 text-xs text-stone-600/80">
-                    <span>${formatDate(note.updatedAt || note.createdAt)}${note.updatedAt ? ' · düzenlendi' : ''}</span>
+                    <span>${dateText}</span>
                     <span class="flex gap-1">
+                        <!-- PATCH /notes/:id/complete -->
+                        <button onclick="toggleNote(${note.id}, ${!done})"
+                            class="px-2 py-1 rounded font-semibold ${done ? 'hover:bg-black/10' : 'bg-white/60 hover:bg-white text-emerald-700'}"
+                            title="${done ? 'Geri al' : 'Yapıldı olarak işaretle'}">
+                            ${done ? '↩️' : '✔ Yapıldı'}
+                        </button>
                         <button onclick="startEdit(${note.id})" class="px-2 py-1 rounded hover:bg-black/10" title="Düzenle">✏️</button>
                         <button onclick="deleteNote(${note.id})" class="px-2 py-1 rounded hover:bg-black/10" title="Sil">🗑️</button>
                     </span>
@@ -118,6 +155,18 @@ async function startEdit(id) {
     titleInput.focus();
 }
 
+// Yapıldı / geri al (PATCH /notes/:id/complete)
+async function toggleNote(id, completed) {
+    const response = await fetch(`${API_URL}/${id}/complete`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ completed })
+    });
+    const result = await response.json();
+    showMessage(result.message, response.ok);
+    await loadNotes();
+}
+
 // Sil (DELETE)
 async function deleteNote(id) {
     if (!confirm('Bu not silinsin mi?')) return;
@@ -150,6 +199,14 @@ function showMessage(text, success) {
 }
 
 cancelBtn.addEventListener('click', resetForm);
+
+// Durum filtresi butonları
+statusTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+        selectedStatus = tab.dataset.status;
+        loadNotes();
+    });
+});
 
 // Arama: her harf yazıldığında hemen değil, yazmayı bırakınca (300 ms sonra) ara
 let searchTimer;

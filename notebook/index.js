@@ -4,11 +4,12 @@
 // Kullanım (terminalde, notebook klasöründe):
 //   node index.js                              -> notları listeler
 //   node index.js add "Başlık" "Not içeriği"   -> yeni not ekler
+//   node index.js done 2                       -> 2 numaralı notu yapıldı / yapılmadı yapar
 //   node index.js delete 2                     -> 2 numaralı notu siler
 //
 // Web arayüzü için: node server.js
 
-const { readNotes, addNote, deleteNote } = require('./notes');
+const { readNotes, addNote, setCompleted, deleteNote } = require('./notes');
 
 // Notları kutu içinde, düzenli şekilde konsola yazdırır
 function listNotes() {
@@ -18,8 +19,10 @@ function listNotes() {
     // Kutunun bir satırı: metni sağdan boşlukla doldurur
     const line = (text) => '│ ' + text.padEnd(width) + ' │';
 
+    const doneCount = notes.filter(n => n.completed).length;
+
     console.log('┌' + '─'.repeat(width + 2) + '┐');
-    console.log(line(`📒 NOT DEFTERİ  (${notes.length} not)`.padEnd(width - 1)));
+    console.log(line(`📒 NOT DEFTERİ  (${doneCount}/${notes.length} yapıldı)`.padEnd(width - 1)));
     console.log('├' + '─'.repeat(width + 2) + '┤');
 
     if (notes.length === 0) {
@@ -27,8 +30,10 @@ function listNotes() {
     }
 
     notes.forEach((note, i) => {
-        console.log(line(`#${note.id}  ${note.title}`.padEnd(width - 10) + note.createdAt));
-        console.log(line(`    ${note.content}`));
+        // [x] yapıldı, [ ] yapılmadı
+        const box = note.completed ? '[x]' : '[ ]';
+        console.log(line(`${box} #${note.id}  ${note.title}`.padEnd(width - 10) + note.createdAt));
+        console.log(line(`        ${note.content}`));
 
         // Notların arasına ince çizgi (sonuncudan sonra değil)
         if (i < notes.length - 1) {
@@ -57,6 +62,18 @@ switch (command) {
         listNotes();
         break;
     }
+    case 'done': {
+        const note = setCompleted(Number(arg1));
+        if (!note) {
+            console.log(`⚠️  ${arg1} numaralı not bulunamadı.`);
+            break;
+        }
+        console.log(note.completed
+            ? `✔️  Tamamlandı: #${note.id} ${note.title}\n`
+            : `↩️  Yapılacaklara geri alındı: #${note.id} ${note.title}\n`);
+        listNotes();
+        break;
+    }
     case 'delete': {
         const deleted = deleteNote(Number(arg1));
         if (!deleted) {
@@ -72,5 +89,5 @@ switch (command) {
         break;
     default:
         console.log(`⚠️  Bilinmeyen komut: ${command}`);
-        console.log('   Kullanılabilir komutlar: add, delete (komut yazmazsan notlar listelenir)');
+        console.log('   Kullanılabilir komutlar: add, done, delete (komut yazmazsan notlar listelenir)');
 }

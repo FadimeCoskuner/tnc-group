@@ -2,13 +2,16 @@
 // Notlar yine notes.json dosyasında tutulur (notes.js modülü ile).
 // Terminal sürümüyle aynı dosyayı kullandığı için ikisinde de aynı notlar görünür.
 //
-// GET    /notes        -> tüm notlar (?search=kelime ile arama)
-// POST   /notes        -> yeni not      Body: { "title": "...", "content": "..." }
-// PUT    /notes/:id    -> notu güncelle Body: { "title": "...", "content": "..." }
-// DELETE /notes/:id    -> notu sil
+// GET    /notes                  -> tüm notlar
+// GET    /notes?search=kelime    -> arama
+// GET    /notes?completed=true   -> sadece yapılanlar (false: yapılacaklar)
+// POST   /notes                  -> yeni not      Body: { "title": "...", "content": "..." }
+// PUT    /notes/:id              -> notu güncelle Body: { "title": "...", "content": "..." }
+// PATCH  /notes/:id/complete     -> yapıldı / yapılmadı Body: { "completed": true }
+// DELETE /notes/:id              -> notu sil
 
 const express = require('express');
-const { readNotes, addNote, updateNote, deleteNote } = require('./notes');
+const { readNotes, addNote, updateNote, setCompleted, deleteNote } = require('./notes');
 
 const app = express();
 const port = 3006;
@@ -29,7 +32,13 @@ function validate(title, content) {
 // GET /notes -> en yeni not en üstte
 app.get('/notes', (req, res) => {
     const search = (req.query.search || '').toLowerCase();
+    const { completed } = req.query;
     let notes = readNotes().reverse();
+
+    // Duruma göre filtre: ?completed=true veya ?completed=false
+    if (completed === 'true' || completed === 'false') {
+        notes = notes.filter(n => n.completed === (completed === 'true'));
+    }
 
     // Arama: başlıkta veya içerikte geçen notlar
     if (search) {
@@ -69,6 +78,27 @@ app.put('/notes/:id', (req, res) => {
     }
 
     res.json({ message: 'Not güncellendi', status: 'success', data: note });
+});
+
+// PATCH /notes/:id/complete -> yapıldı / yapılmadı olarak işaretle
+// Body'de completed yoksa mevcut durum tersine çevrilir
+app.patch('/notes/:id/complete', (req, res) => {
+    const { completed } = req.body;
+
+    if (completed !== undefined && typeof completed !== 'boolean') {
+        return res.status(400).json({ message: 'completed true veya false olmalıdır', status: 'error' });
+    }
+
+    const note = setCompleted(Number(req.params.id), completed);
+    if (!note) {
+        return res.status(404).json({ message: 'Not bulunamadı', status: 'error' });
+    }
+
+    res.json({
+        message: note.completed ? 'Not tamamlandı olarak işaretlendi' : 'Not yapılacaklara geri alındı',
+        status: 'success',
+        data: note
+    });
 });
 
 // DELETE /notes/:id -> notu sil
